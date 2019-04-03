@@ -1,0 +1,98 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: This stack deploys the IAM Roles for an SFTP Demo. In this, we will create 2 roles for different companies (companyA, companyB), and then create 1 policy that locks down a user to their home directory. 
+
+Resources:
+  SftpDemoS3BucketCompanyA:
+    Type: AWS::S3::Bucket
+    
+  # Create IAM Role to allow AWS Transfer service to create CWL. Otherwise you get issues when trying to log in.
+  SftpDemoLoggingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - transfer.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: AllowAWSTransferLogging
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogStream
+              - logs:DescribeLogStreams
+              - logs:CreateLogGroup
+              - logs:PutLogEvents
+            Resource: '*'
+  
+  # This is the general role for Company A users who have access to a particular bucket.         
+  SftpDemoCompanyAIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - transfer.amazonaws.com
+          Action: 
+            - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: AllowAWSTransferCompanyA
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                # Allow Listing of user folder
+                - s3:ListBucket
+                - s3:GetBucketLocation
+              Resource: !GetAtt SftpDemoS3BucketCompanyA.Arn
+
+            - Effect: Allow
+              Action:
+                # Allow access to objects in home directory
+                - s3:PutObject
+                - s3:GetObject
+                - s3:DeleteObjectVersion
+                - s3:DeleteObject
+                - s3:GetObjectVersion
+              Resource: !Sub ${SftpDemoS3BucketCompanyA.Arn}/*
+  SftpDemoScopeDownPolicy: 
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: Policy for scoping down permissions
+      Path: "/"
+      PolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: "Allow"
+            Action: 
+              - s3:ListBucket
+            Resource: arn:aws:s3:::${transfer:HomeBucket}
+            Condition: 
+              StringLike: 
+                s3:prefix: 
+                  - ${transfer:HomeFolder}/*
+                  - ${transfer:HomeFolder}
+                  
+          - Effect: "Allow"
+            Action: 
+              - s3:ListAllMyBuckets
+              - s3:GetBucketLocation
+            Resource: '*'
+            
+          - Effect: "Allow"
+            Action: 
+              - s3:PutObject
+              - s3:GetObject
+              - s3:DeleteObjectVersion
+              - s3:DeleteObject
+              - s3:GetObjectVersion
+            Resource: arn:aws:s3:::${transfer:HomeDirectory}*

@@ -15,8 +15,19 @@ Mappings:
       CIDR: 10.0.2.0/24
     Private2:
       CIDR: 10.0.3.0/24
+    Cloud9:
+      CIDR: 10.0.4.0/24
       
 Resources:
+  
+  Cloud9Environment:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties:
+      AutomaticStopTimeMinutes: 30
+      InstanceType: t2.small
+      Name: !Sub Project-${AWS::StackName}
+      SubnetId: !Ref Cloud9Subnet
+      
   VPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -60,6 +71,19 @@ Resources:
         Value: !Ref AWS::StackName
       - Key: Network
         Value: Public
+
+  Cloud9Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref VPC
+      MapPublicIpOnLaunch: true
+      CidrBlock: !FindInMap [SubnetConfig, Cloud9, CIDR]
+      Tags:
+      - Key: Name
+        Value: Cloud9 Subnet Do Not Use
+      - Key: Application
+        Value: !Ref AWS::StackName
         
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -170,7 +194,13 @@ Resources:
         FromPort: 22
         ToPort: 22
         CidrIp: 0.0.0.0/0
-
+        
+  Cloud9SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Cloud9Subnet
+      RouteTableId: !Ref PublicRouteTable
+      
   PublicSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:

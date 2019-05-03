@@ -189,13 +189,6 @@ There was a PublicRouteTable resource created. Maybe we can do something with it
 </details>
 
 <details>
-<summary>HINT 3</summary>
-
-There was a PublicRouteTable resource created. Maybe we can do something with it?
-
-</details>
-
-<details>
 <summary>FINAL HINT</summary>
 
 Look at lines 174, 180. 
@@ -208,6 +201,8 @@ Look at lines 174, 180.
 Look in the hints folder in the repo for createVPC-fixnet.yml if you really can't figure it out. See if your template works instead of just copy pasting from this file though.
 
 </details>
+
+Now is the time to update your stack again. You should now have a CloudFormation stack that is in sync with your actual infrastructure.
 
 ### Lab 3 - Add exports to template
 

@@ -119,7 +119,9 @@ Finally, let's consider the VPC design. It's possible that the VPC was designed 
 
 <details>
 <summary>HINT 4</summary>
+
 Check the subnet your instance is in and look at the route tables. What's required for internet connectivity here? Since we're focusing on the public subnet, the answer is here: [VPC Scenario 1](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario1.html).
+
 </details>
 
 <details>
@@ -139,14 +141,74 @@ At this point, you should be able to hit your instance and log in. But now we ha
 
 ### Lab 2 - Update VPC Configuration within CloudFormation
 
-We know what we have to change. Let's make the changes in CloudFormation. 
+Update the appropriate resources in CloudFormation. Remember, you modified the security group and a route table association. Try and find these in the CloudFormation template and update them. 
 
-1. Update the appropriate resources in CloudFormation. Remember, you modified the security group and a route table association. Try and find these in the CloudFormation template and update them. 
+1. Update Security Group
+
+Generally speaking, you don't want to update too much at once, so let's focus on the security group first.
 
 <details>
 <summary>HINT 1</summary>
 
-First is the security group. See line 158. What needs to be added? See [EC2::SecurityGroup Resource Type Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html)
+First is the security group. Navigate to the CloudFormation console and run **Drift Detection** against your stack and see if what it tells you aligns with what you have changed.
 
 </details>
 
+<details>
+<summary>HINT 2</summary>
+
+Still can't figure out the security group? See line 158. What needs to be added? See [EC2::SecurityGroup Resource Type Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html). 
+
+</details>
+
+Once you update your template, update the stack. You can do this via CLI in Cloud9 or via the CloudFormation console. CLI will be faster than clicking, but you'll just have to find the syntax [here](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-stack.html). 
+
+2. Update Route Table Associations
+
+You will have noticed that drift detection only showed you the security group differences and not the route table. That's because not all resources are supported in drift detection yet. However, we know that it's wrong, so you'll need to update it now. 
+
+<details>
+<summary>HINT 1</summary>
+
+See the [AWS::EC2::SubnetRouteTableAssociation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-subnet-route-table-assoc.html) documentation for how to update this resource. 
+
+</details>
+
+<details>
+<summary>HINT 2</summary>
+
+Look through the template to find the associations. What are they associated to and is there a better option?
+
+</details>
+
+<details>
+<summary>HINT 3</summary>
+
+There was a PublicRouteTable resource created. Maybe we can do something with it?
+
+</details>
+
+<details>
+<summary>HINT 3</summary>
+
+There was a PublicRouteTable resource created. Maybe we can do something with it?
+
+</details>
+
+<details>
+<summary>FINAL HINT</summary>
+
+Look at lines 174, 180. 
+
+</details>
+
+<details>
+<summary>Ok this is the answer.</summary>
+
+Look in the hints folder in the repo for createVPC-fixnet.yml if you really can't figure it out. See if your template works instead of just copy pasting from this file though.
+
+</details>
+
+### Lab 3 - Add exports to template
+
+We want to make this more modular for other stacks to consume. 

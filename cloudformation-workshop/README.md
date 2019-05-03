@@ -23,8 +23,8 @@ On the left pane (Blue), any files downloaded to your environment will appear he
 
 On the bottom, you will see a bash shell (Yellow). For the remainder of the lab, use this shell to enter all commands.  You can also customize your Cloud9 environment by changing themes, moving panes around, etc. As an example, you can change the theme from light to dark by following the instructions
 <details>
-<summary>Hi!</summary
- [here](https://docs.aws.amazon.com/cloud9/latest/user-guide/settings-theme.html).
+<summary>Hi</summary>
+[here](https://docs.aws.amazon.com/cloud9/latest/user-guide/settings-theme.html).
 </details>
 
 ### Set Up Cloud9 Environment

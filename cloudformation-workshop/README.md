@@ -96,8 +96,31 @@ Launch an EC2 instance with these parameters:
 From Cloud9, try to SSH in. Get the public IP of your instance and use this command:
 
 <pre>
-$ ssh -i cfn-workshop.pem ec2-user@*PublicIp*
+$ ssh -i cfn-workshop.pem ec2-user@PublicIp
 </pre>
+
+5. Troubleshoot your connectivity
+
+For some reason it doesn't seem like you can access your EC2 instance. Try and figure out why. 
+<details>
+<summary>HINT 1</summary>
+There are a number of prerequisites for EC2 instances to be reachable via public IP. First they must have a public IP. Make sure you set the instance up properly with a publicly routable IP
+</details>
+
+<details>
+<summary>HINT 2</summary>
+The next thing to look at is the security group of your instance. Is it allowing access to port 22 from anything?
+</details>
+
+<details>
+<summary>HINT 3</summary>
+Finally, let's consider the VPC design. It's possible that the VPC was designed incorrectly. 
+</details>
+
+<details>
+<summary> FINAL HINT </summary>
+Look at the route tables and see if there's a route for 0.0.0.0/0 to go to an IGW. This is a hard requirement to be internet routable.
+</details>
 
 1. Navigate to the AWS Management Console and choose EC2
 2. Click **Key Pairs** on the left

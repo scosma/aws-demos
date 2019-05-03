@@ -94,10 +94,10 @@ Launch an EC2 instance with these parameters:
 
 4. Try to connect to your EC2 instance.
 
-From Cloud9, try to SSH in. Get the public IP of your instance and use this command:
+From Cloud9, try to connect. Get the public IP of your instance and use this command:
 
 <pre>
-$ ssh -i cfn-workshop.pem ec2-user@PublicIp
+$ nc -v publicIPofInstance 22
 </pre>
 
 5. Troubleshoot your connectivity
@@ -135,7 +135,8 @@ Does the route table show a route to an IGW for 0.0.0.0/0? It doesn't. Choose a 
 From Cloud9, do this again:
 
 <pre>
-$ ssh -i cfn-workshop.pem ec2-user@PublicIp
+$ nc -v publicIPofInstance 22
+Connection to ec2-52-212-4-85.eu-west-1.compute.amazonaws.com 3389 port [tcp/ms-wbt-server] succeeded!
 </pre>
 
 At this point, you should be able to hit your instance and log in. But now we have to make sure the VPC is actually deployed correctly. 
@@ -252,7 +253,7 @@ Remember, the requirements of our EC2 instance were:
 - In the cfn-workshop security group
 - With your cfn-workshop keypair
 
-If you want to deploy a hard coded version of your EC2 instance, you can feel free to do so. This is a great way to test CloudFormation stacks. In the subsequent steps, we will want to parameterize as much as possible to make the template usable everywhere. 
+If you want to deploy a hard coded version of your EC2 instance, you can feel free to do so. This is a great way to test CloudFormation stacks. In the subsequent steps, we will want to parameterize as much as possible to make the template usable everywhere. When you have it deployed, try to connect to it again.
 
 2. Pull in security group IDs and subnet IDs from your previous stack
 
@@ -266,8 +267,40 @@ You exported a number of values earlier. Imports use the same names.
 </details>
 
 <details>
-<summary>HINT 1</summary>
+<summary>This is the answer!</summary>
 
-You exported a number of values earlier. Imports use the same names. 
+Take a look at [createApps-1-sample.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createApps-1-sample.yml) and see if there's anything that differs from your code.
 
 </details>
+
+3. Parameterize some of the parameters.
+
+When using CloudFormation, it's important to parameterize as much as possible. Add a **Parameters** section now and take in user inputs for:
+- Instance Type (with a constraint that users can only use t2.micro)
+- AMI ID
+- KeyName (using the [Keypair Parameter Type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#aws-specific-parameter-types))
+
+<details>
+<summary>HINT 1</summary>
+
+When you create a parameter, you will have to reference it later. Where and how do you reference it?
+
+</details>
+
+<details>
+<summary>This is the answer!</summary>
+
+Take a look at [createApps-2-params.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createApps-2-params.yml) and see if there's anything that differs from your code.
+
+</details>
+
+4. Re-deploy your application stack
+
+Update CloudFormation with your newly parameterized CloudFormation template. If all goes well, you should see a successful deployment. Look at the instance that was actually created and see if you can connect to it:
+
+<pre>
+$ nc -v publicIPofInstance 22
+Connection to ec2-52-212-4-85.eu-west-1.compute.amazonaws.com 3389 port [tcp/ms-wbt-server] succeeded!
+</pre>
+
+Congratulations! You have now created a very simple EC2 deployment on AWS using CloudFormation. Try to change various things and see what happens. Remember, however, that if you change any exports, the changes will not propagate to any stack that is consuming it as an input.

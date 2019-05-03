@@ -1,0 +1,29 @@
+Parameters: 
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+    - t2.micro
+    ConstraintDescription: must be a t2.micro
+    
+  AmiId:
+    Description: AMI ID you would like to launch
+    Type: String
+    Default: ami-07683a44e80cd32c5
+    
+  KeyName:
+    Description: SSH Key
+    Type: AWS::EC2::KeyPair::KeyName
+
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds: 
+        - Fn::ImportValue: CFNWorkshop-BaselineSG
+      SubnetId: 
+        Fn::ImportValue: CFNWorkshop-PublicSubnet2

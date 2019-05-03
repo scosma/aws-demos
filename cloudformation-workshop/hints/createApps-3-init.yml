@@ -1,0 +1,50 @@
+Parameters: 
+  InstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+    - t2.micro
+    ConstraintDescription: must be a t2.micro
+    
+  AmiId:
+    Description: AMI ID you would like to launch
+    Type: String
+    Default: ami-07683a44e80cd32c5
+    
+  KeyName:
+    Description: SSH Key
+    Type: AWS::EC2::KeyPair::KeyName
+
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Metadata:
+      Comment: Install a simple application
+      AWS::CloudFormation::Init:
+        config:
+          packages:
+            yum:
+              httpd: []
+          files:
+            "/var/www/html/index.html":
+              content: !Sub | 
+                <center><img src="http://immersionday.hubertcheung.com/successkid.jpg"
+                  alt="SUCCESS!"/>
+                <h1>OHai!</h1>
+              mode: '000644'
+              owner: root
+              group: root
+          services:
+            sysvinit:
+              httpd:
+                enabled: 'true'
+                ensureRunning: 'true'
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds: 
+        - Fn::ImportValue: CFNWorkshop-BaselineSG
+      SubnetId: 
+        Fn::ImportValue: CFNWorkshop-PublicSubnet2

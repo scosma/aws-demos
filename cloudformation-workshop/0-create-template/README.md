@@ -1,3 +1,7 @@
+## Create your first template
+
+The goal of this section is to get you familiar with EC2 so that you know what you will be deploying with CloudFormation. Then you'll create a template to deploy EC2 while following best practices.
+
 ### Lab 1 - Launch and connect to an EC2 instance
 The first thing we'll do is try to launch an EC2 instance into one of the public subnets of the VPC
 
@@ -202,7 +206,7 @@ Look in the hints folder in the repo for [createVPC-2-exports.yml](https://githu
 
 Once you have everything added, go ahead and update your stack again. You should then be able to see that there are now values in the Outputs section of your CloudFormation stack.
 
-### Lab 4 - Templatize your EC2 instance
+### Lab 4 - Parameterize your EC2 instance
 
 Now that you have the network infrastructure stack, it's time to create an application stack. First, we will get an EC2 instance launched into our VPC. Effectively, the same thing you did earlier, but now we'll do it with CloudFormation.
 

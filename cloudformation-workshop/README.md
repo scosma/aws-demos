@@ -74,15 +74,30 @@ $ aws ec2 describe-instances
 In order to log into your instance later, you'll have to create a key pair. You can do this in the console by navigating to the Key Pairs page of the EC2 Console or you can run a CLI command:
 
 <pre>
-$ aws ec2 create-key-pair --key-name cfn-workshop --query 'KeyMaterial' --output text > cfn-workshop-private-key.pem
-$ chmod 600 cfn-workshop-private-key.pem
+$ aws ec2 create-key-pair --key-name cfn-workshop --query 'KeyMaterial' --output text > cfn-workshop.pem
+$ chmod 600 cfn-workshop.pem
 </pre>
 
-This command creates a key pair and outputs it as a text file named `cfn-workshop-private-key.pem`. The chmod command locks it down. Keep in mind that you will never be able to download this key pair again, so don't lose it.
+This command creates a key pair and outputs it as a text file named `cfn-workshop.pem`. The chmod command locks it down. Keep in mind that you will never be able to download this key pair again, so don't lose it.
 
-3. Launch an EC2 instance
+3. Launch an EC2 instance into a PUBLIC subnet
 
+This is where the instructions will be less step-by-step. Try to figure out how to do things and let us know if you need any help. 
 
+Launch an EC2 instance with these parameters:
+- AMI: ami-07683a44e80cd32c5 (**"Amazon Linux 2 AMI (HVM), SSD Volume Type"**)
+- In the VPC that was created for you in a PUBLIC subnet (It's tagged public)
+- Auto assigns a public IP
+- In the cfn-workshop security group
+- With your cfn-workshop keypair
+
+4. Try to connect to your EC2 instance.
+
+From Cloud9, try to SSH in. Get the public IP of your instance and use this command:
+
+<pre>
+$ ssh -i cfn-workshop.pem ec2-user@*PublicIp*
+</pre>
 
 1. Navigate to the AWS Management Console and choose EC2
 2. Click **Key Pairs** on the left

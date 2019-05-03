@@ -86,6 +86,7 @@ This is where the instructions will be less step-by-step. Try to figure out how 
 
 Launch an EC2 instance with these parameters:
 - AMI: ami-07683a44e80cd32c5 (**"Amazon Linux 2 AMI (HVM), SSD Volume Type"**)
+- Instance type: t2.micro
 - In the VPC that was created for you in a PUBLIC subnet (It's tagged public)
 - Auto assigns a public IP
 - In the cfn-workshop security group
@@ -237,4 +238,36 @@ Once you have everything added, go ahead and update your stack again. You should
 
 ### Lab 4 - Templatize your EC2 instance
 
-Now that you have the network infrastructure stack, it's time to create an application stack. First, we will get an EC2 instance launched into our VPC. Effectively, the same thing 
+Now that you have the network infrastructure stack, it's time to create an application stack. First, we will get an EC2 instance launched into our VPC. Effectively, the same thing you did earlier, but now we'll do it with CloudFormation.
+
+1. Create a Resources section for your template
+
+Instead of using the same template, you will be creating a new template to separate the stacks. Within a CloudFormation template, the one section that is actually required: **Resources**. Build a CloudFormation template to launch a single EC2 instance following the [AWS::EC2::Instance Definition](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-instance.html). 
+
+Remember, the requirements of our EC2 instance were:
+- AMI: ami-07683a44e80cd32c5 (**"Amazon Linux 2 AMI (HVM), SSD Volume Type"**)
+- Instance Type: t2.micro
+- In the VPC that was created for you in a PUBLIC subnet (It's tagged public)
+- Auto assigns a public IP
+- In the cfn-workshop security group
+- With your cfn-workshop keypair
+
+If you want to deploy a hard coded version of your EC2 instance, you can feel free to do so. This is a great way to test CloudFormation stacks. In the subsequent steps, we will want to parameterize as much as possible to make the template usable everywhere. 
+
+2. Pull in security group IDs and subnet IDs from your previous stack
+
+In the last lab, you created outputs for your network stack. Now you can pull that into the EC2 definition above. Use [Fn::ImportValue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html) to import the values and put them directly into the EC2 resource definition.
+
+<details>
+<summary>HINT 1</summary>
+
+You exported a number of values earlier. Imports use the same names. 
+
+</details>
+
+<details>
+<summary>HINT 1</summary>
+
+You exported a number of values earlier. Imports use the same names. 
+
+</details>

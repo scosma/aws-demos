@@ -225,3 +225,9 @@ Outputs:
     Value: !Ref PrivateSubnet2
     Export:
       Name: !Sub ${AWS::StackName}-PrivateSubnet2
+  
+  InstanceSecurityGroup:
+    Description: Security Group ID of Baseline Security Group
+    Value: !Ref InstanceSecurityGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-BaselineSG

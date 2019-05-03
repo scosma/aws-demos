@@ -104,3 +104,12 @@ Take a look at [createApps-4-init.yml](https://github.com/hub714/aws-demos/blob/
 4\. Update your stack
 
 You should now have a fully working stack! 
+
+### Bonus
+
+No instructions or hints, but one of the most common things that you will need to do will be to create IAM Roles, scope them down, and attach them to your instance. Challenge yourself to create a role to:
+- Read objects only from a specific S3 bucket: immersionday.hubertcheung.com
+- Create EBS volumes
+- Anything else you would like to do
+
+Then attach the role to the EC2 instance so it can do that.

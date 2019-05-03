@@ -5,7 +5,18 @@
 The goal of this workshop is to give users a hands on experience building CloudFormation templates. Ultimately, when all is done, users will have a working website on AWS. 
 
 ### Workshop Setup
+
 Workshop accounts have already been created for you. Simply log into them and start the labs. You can feel free to run commands from anywhere, but a Cloud9 instance has been created for your convenience.
+
+Use the accounts previously provided to you. Sign in at https://acctnum.signin.aws.amazon.com/.
+
+Click on the **Deploy to AWS** icon below to region to stand up the core workshop infrastructure.
+
+Region | Launch Template
+------------ | -------------  
+**Ireland** (eu-west-1) | [![Launch Mythical Mysfits Stack into Ireland with CloudFormation](/images/deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=cfn-workshop&templateURL=https://s3-us-west-2.amazonaws.com/immersionday.hubertcheung.com/createVPC.yml)  
+
+
 
 ### Familiarize yourself with the workshop environment
 
@@ -31,6 +42,39 @@ There are a number of files and startup scripts we have pre-created for you. The
 
 <pre>
 $ git clone https://github.com/hub714/aws-demos.git
+</pre>
+
+2\. Configure the AWS Command Line Interface (CLI)
+
+As we'll be using the AWS CLI for this lab, let's configure it first. Cloud9 will automatically configure credentials for you, so what we're looking to do is configure the region.
+
+<pre>
+$ aws configure
+</pre>
+
+Don't change anything and hit enter 2 times until you see **Default region name [eu-west-1]**. Ensure it says eu-west-1. If it doesn't, type in **eu-west-1**. Hit enter 2 more times. In the end, your console should look like this:
+
+<pre>
+$ aws configure
+AWS Access Key ID [****************5NHJ]: 
+AWS Secret Access Key [****************Ar06]: 
+Default region name [eu-west-1]: 
+Default output format [None]: 
+</pre>
+
+Now test the CLI:
+
+<pre>
+$ aws ec2 describe-instances
+</pre>
+
+You should see something like this:
+
+<pre>
+$ aws ec2 describe-instances
+{
+    "Reservations": []
+}
 </pre>
 
 ### Let's begin!

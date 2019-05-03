@@ -33,7 +33,7 @@ There are a number of files and startup scripts we have pre-created for you. The
 $ git clone https://github.com/hub714/aws-demos.git
 </pre>
 
-### Lab 1 - Launch an EC2 instance
+### Lab 1 - Launch and connect to an EC2 instance
 The first thing we'll do is try to launch an EC2 instance into one of the public subnets of the VPC
 
 1. Configure the AWS Command Line Interface (CLI)
@@ -104,7 +104,7 @@ $ ssh -i cfn-workshop.pem ec2-user@PublicIp
 For some reason it doesn't seem like you can access your EC2 instance. Try and figure out why. 
 <details>
 <summary>HINT 1</summary>
-There are a number of prerequisites for EC2 instances to be reachable via public IP. First they must have a public IP. Make sure you set the instance up properly with a publicly routable IP
+There are a number of prerequisites for EC2 instances to be reachable via public IP. First they must have a public IP. Make sure you set the instance up properly with a publicly routable IP. 
 </details>
 
 <details>
@@ -118,18 +118,33 @@ Finally, let's consider the VPC design. It's possible that the VPC was designed 
 </details>
 
 <details>
-<summary> FINAL HINT </summary>
-Look at the route tables and see if there's a route for 0.0.0.0/0 to go to an IGW. This is a hard requirement to be internet routable.
+<summary>HINT 4</summary>
+Check the subnet your instance is in and look at the route tables. What's required for internet connectivity here? Since we're focusing on the public subnet, the answer is here: [VPC Scenario 1](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario1.html).
 </details>
 
-1. Navigate to the AWS Management Console and choose EC2
-2. Click **Key Pairs** on the left
-3. Create a **Key Pair.**  *It will ask you to download this keypair. Download it and keep it safe. You will never be able to get this keypair again*
+<details>
+<summary>FINAL HINT</summary>
+Does the route table show a route to an IGW for 0.0.0.0/0? It doesn't. Choose a different route table to associate with the subnet. One of them will have the 0.0.0.0/0 route.
+</details>
 
+6. Test connectivity again
 
+From Cloud9, do this again:
 
-Create keypair
-Log into Cloud9
+<pre>
+$ ssh -i cfn-workshop.pem ec2-user@PublicIp
+</pre>
 
+At this point, you should be able to hit your instance and log in. But now we have to make sure the VPC is actually deployed correctly. 
 
+### Lab 2 - Update VPC Configuration within CloudFormation
+
+We know what we have to change. Let's make the changes in CloudFormation. 
+
+1. Update the appropriate resources in CloudFormation. Remember, you modified the security group and a route table association. Try and find these in the CloudFormation template and update them. 
+
+<details>
+<summary>HINT 1</summary>
+First is the security group. See line 158. What needs to be added? See [EC2::SecurityGroup Resource Type Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html)
+</details>
 

@@ -36,9 +36,58 @@ $ git clone https://github.com/hub714/aws-demos.git
 ### Lab 1 - Launch an EC2 instance
 The first thing we'll do is try to launch an EC2 instance into one of the public subnets of the VPC
 
+1. Configure the AWS Command Line Interface (CLI)
+
+As we'll be using the AWS CLI for this lab, let's configure it first. Cloud9 will automatically configure credentials for you, so what we're looking to do is configure the region.
+
+<pre>
+$ aws configure
+</pre>
+
+Don't change anything and hit enter 2 times until you see **Default region name [eu-west-1]**. Ensure it says eu-west-1. If it doesn't, type in **eu-west-1**. Hit enter 2 more times. In the end, your console should look like this:
+
+<pre>
+$ aws configure
+AWS Access Key ID [****************5NHJ]: 
+AWS Secret Access Key [****************Ar06]: 
+Default region name [eu-west-1]: 
+Default output format [None]: 
+</pre>
+
+Now test the CLI:
+
+<pre>
+$ aws ec2 describe-instances
+</pre>
+
+You should see something like this:
+
+<pre>
+$ aws ec2 describe-instances
+{
+    "Reservations": []
+}
+</pre>
+
+2. Create an EC2 Key Pair
+
+In order to log into your instance later, you'll have to create a key pair. You can do this in the console by navigating to the Key Pairs page of the EC2 Console or you can run a CLI command:
+
+<pre>
+$ aws ec2 create-key-pair --key-name cfn-workshop --query 'KeyMaterial' --output text > cfn-workshop-private-key.pem
+$ chmod 600 cfn-workshop-private-key.pem
+</pre>
+
+This command creates a key pair and outputs it as a text file named `cfn-workshop-private-key.pem`. The chmod command locks it down. Keep in mind that you will never be able to download this key pair again, so don't lose it.
+
+3. Launch an EC2 instance
+
+
+
 1. Navigate to the AWS Management Console and choose EC2
-2. Click Keypairs on the left
-3. Create a Keypair. **It will ask you to download this keypair. Download it and keep it safe. You will never be able to get this keypair again**
+2. Click **Key Pairs** on the left
+3. Create a **Key Pair.**  *It will ask you to download this keypair. Download it and keep it safe. You will never be able to get this keypair again*
+
 
 
 Create keypair

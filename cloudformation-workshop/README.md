@@ -21,11 +21,7 @@ On the left pane (Blue), any files downloaded to your environment will appear he
 
 ![Cloud9 Editing](images/cloud9-environment.png)
 
-On the bottom, you will see a bash shell (Yellow). For the remainder of the lab, use this shell to enter all commands.  You can also customize your Cloud9 environment by changing themes, moving panes around, etc. As an example, you can change the theme from light to dark by following the instructions
-<details>
-<summary>Hi</summary>
-[here](https://docs.aws.amazon.com/cloud9/latest/user-guide/settings-theme.html).
-</details>
+On the bottom, you will see a bash shell (Yellow). For the remainder of the lab, use this shell to enter all commands.  You can also customize your Cloud9 environment by changing themes, moving panes around, etc. As an example, you can change the theme from light to dark by following the instructions [here](https://docs.aws.amazon.com/cloud9/latest/user-guide/settings-theme.html).
 
 ### Set Up Cloud9 Environment
 
@@ -149,6 +145,8 @@ We know what we have to change. Let's make the changes in CloudFormation.
 
 <details>
 <summary>HINT 1</summary>
+
 First is the security group. See line 158. What needs to be added? See [EC2::SecurityGroup Resource Type Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html)
+
 </details>
 

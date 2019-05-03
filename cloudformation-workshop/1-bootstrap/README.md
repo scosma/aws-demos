@@ -44,7 +44,7 @@ How do you make sure things are turned on? This is where the [**Services**](http
 <details>
 <summary>Ok here's the answer!</summary>
 
-Just kidding. 
+Take a look at [createApps-3-init.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createApps-3-init.yml) and see if there's anything that differs from your code. If you copy/paste this one you will also get a very successful index.html page instead of the default.
 
 </details>
 
@@ -54,15 +54,53 @@ At this point, you have the metadata ready for the CloudFormation helper scripts
 
 Using EC2 Userdata, you have the ability to run Bash or Powershell scripts when an EC2 instance first starts up. In this lab, you will learn how to use Userdata to install the CloudFormation helper scripts.
 
-1\. Add a Userdata property to your EC2 Instance definition.
+1\. Add a [Creation Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-creationpolicy.html)
+
+When CloudFormation creates a resource, it simply waits for a 200 OK and will mark the resource as CREATE_COMPLETE. However, when we're doing bootstrapping, a CREATE_COMPLETE does not mean that the application is done and running. This is when we look into creation policies. 
+
+Add a creation policy to your EC2 resource.
+
+<details>
+<summary>HINT 1</summary>
+
+The [docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-creationpolicy.html) will explain this one. No hints this time!
+
+</details>
+
+2\. Add a Userdata property to your EC2 Instance definition.
 
 Typically, you won't write everything on your own. You will probably start with some templates and base code. A great place to start looking is in the [CloudFormation documentation sample templates](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-ec2.html#scenario-ec2-instance-with-vol-and-tags). 
 
 Within userdata, you can put in any scripts you would like. For some more information, and some JSON examples, take a look [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/deploying.applications.html). 
 
-2\. Update and call the CFN Helper Scripts
+3\. Update and call the CFN Helper Scripts
 
 There are a few things we will have to do within userdata:
 - Update aws-cfn-bootstrap
 - call cfn-init with the right parameters
+- call cfn-signal with the right
 
+<details>
+<summary>HINT 1</summary>
+
+[Userdata](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) has to be base64. There are also a lot of sample bash scripts that will run arbitrary commands. Don't try to reinvent the wheel. Find a sample.
+
+</details>
+
+<details>
+<summary>HINT 2</summary>
+
+Cfn-init does the bootstrapping and cfn-signal tells CloudFormation whether or not the bootstrapping was successful.
+
+</details>
+
+<details>
+<summary>Ok here's the answer!</summary>
+
+Take a look at [createApps-4-init.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createApps-4-init.yml) and see if there's anything that differs from your code. If you copy/paste this one you will also get a very successful index.html page instead of the default.
+
+</details>
+
+4\. Update your stack
+
+You should now have a fully working stack! 

@@ -198,7 +198,7 @@ Look at lines 174, 180.
 <details>
 <summary>Ok this is the answer.</summary>
 
-Look in the hints folder in the repo for createVPC-fixnet.yml if you really can't figure it out. See if your template works instead of just copy pasting from this file though.
+Look in the hints folder in the repo for [createVPC-fixnet.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createVPC-1-fixnet.yml) if you really can't figure it out. See if your template works instead of just copy pasting from this file though.
 
 </details>
 
@@ -206,4 +206,35 @@ Now is the time to update your stack again. You should now have a CloudFormation
 
 ### Lab 3 - Add exports to template
 
-We want to make this more modular for other stacks to consume. 
+We want to make this more modular for other stacks to consume. Add some exports to your template. Specifically, export:
+- VPC ID
+- Subnet-ids of all subnets
+- Security Group ID
+
+See the [CloudFormation Exports Documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) for how to do it.
+
+<details>
+<summary>HINT 1</summary>
+
+Exports are done in the Outputs section of a CloudFormation template. Our template doesn't have one, so you'll have to add one.
+
+</details>
+
+<details>
+<summary>HINT 2</summary>
+
+You can use references like ${AWS::StackName} to make your exports unique. Think about how you would want to import them yourself later.
+
+</details>
+
+<summary>Ok this is the answer.</summary>
+
+Look in the hints folder in the repo for [createVPC-2-exports.yml](https://github.com/hub714/aws-demos/blob/master/cloudformation-workshop/hints/createVPC-2-exports.yml) if you really can't figure it out. See if your template works instead of just copy pasting from this file though.
+
+</details>
+
+Once you have everything added, go ahead and update your stack again. You should then be able to see that there are now values in the Outputs section of your CloudFormation stack.
+
+### Lab 4 - Templatize your EC2 instance
+
+Now that you have the network infrastructure stack, it's time to create an application stack. First, we will get an EC2 instance launched into our VPC. Effectively, the same thing 
